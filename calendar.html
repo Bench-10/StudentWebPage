@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar Picker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+      }
+      .calendar-container {
+        width: 90%;
+        max-width: 800px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .month-year {
+        font-size: 24px;
+        font-weight: 500;
+      }
+      .button {
+        background-color: #1cb978;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+      }
+      .day-name {
+        font-weight: 500;
+        color: #888;
+      }
+      .date {
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .date:hover {
+        background-color: #1cb978;
+        color: white;
+      }
+      .date.selected {
+        background-color: #1cb978;
+        color: white;
+      }
+      .date.highlighted {
+        border: 2px solid #1cb978;
+      }
+      .date.full {
+        background-color: #ff7f7f; /* Color for full dates */
+        color: white;
+      }
+      .summary {
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .proceed-button {
+        display: none;
+        margin-top: 20px;
+        background-color: #1cb978;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .time-slots {
+        display: none;
+        margin-top: 20px;
+      }
+      .time-slot {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        margin: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .time-slot:hover {
+        background-color: #1cb978;
+        color: white;
+      }
+      .time-slot.selected {
+        background-color: #1cb978;
+        color: white;
+      }
+      .save-button {
+        display: none;
+        margin-top: 20px;
+        background-color: #1cb978;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .availability-status {
+        margin-top: 20px;
+        font-weight: 500;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calendar-container">
+      <div class="header">
+        <button class="button" id="prev-month">Previous</button>
+        <div class="month-year" id="month-year"></div>
+        <button class="button" id="next-month">Next</button>
+      </div>
+      <div class="calendar" id="calendar"></div>
+      <div class="availability-status" id="availability-status">
+        Availability: <span id="availability-text">Available</span>
+      </div>
+      <div class="summary">
+        Selected Date: <span id="selected-date">None</span>
+      </div>
+      <button class="proceed-button" id="proceed-button">Proceed</button>
+      <div class="time-slots" id="time-slots"></div>
+      <button class="save-button" id="save-button">Save</button>
+    </div>
+
+    <script>
+      const monthYearElement = document.getElementById('month-year');
+      const calendarElement = document.getElementById('calendar');
+      const selectedDateElement = document.getElementById('selected-date');
+      const availabilityStatusElement = document.getElementById('availability-status');
+      const availabilityTextElement = document.getElementById('availability-text');
+      const prevMonthButton = document.getElementById('prev-month');
+      const nextMonthButton = document.getElementById('next-month');
+      const proceedButton = document.getElementById('proceed-button');
+      const timeSlotsElement = document.getElementById('time-slots');
+      const saveButton = document.getElementById('save-button');
+
+      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let currentDate = new Date();
+      let selectedDate = null;
+      let selectedTimeSlot = null;
+      let bookedTimeSlots = {};
+
+      function updateCalendar() {
+        calendarElement.innerHTML = '';
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        monthYearElement.textContent = currentDate.toLocaleString('default', {
+          month: 'long',
+          year: 'numeric',
+        });
+
+        daysOfWeek.forEach((day) => {
+          const dayElement = document.createElement('div');
+          dayElement.classList.add('day-name');
+          dayElement.textContent = day;
+          calendarElement.appendChild(dayElement);
+        });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+          const emptyElement = document.createElement('div');
+          calendarElement.appendChild(emptyElement);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateElement = document.createElement('div');
+          dateElement.classList.add('date');
+          dateElement.textContent = day;
+
+          const currentDateKey = new Date(year, month, day).toDateString();
+          if (bookedTimeSlots[currentDateKey]) {
+            if (bookedTimeSlots[currentDateKey].length === 12) {
+              dateElement.classList.add('full');
+              availabilityTextElement.textContent = 'Fully Booked';
+            } else {
+              dateElement.classList.add('highlighted');
+              availabilityTextElement.textContent = 'Partially Available';
+            }
+          }
+
+          dateElement.addEventListener('click', () => {
+            document.querySelectorAll('.date').forEach((el) => {
+              el.classList.remove('selected');
+            });
+            dateElement.classList.add('selected');
+            selectedDate = new Date(year, month, day);
+            selectedDateElement.textContent = selectedDate.toDateString();
+            proceedButton.style.display = 'block';
+            timeSlotsElement.style.display = 'none';
+            saveButton.style.display = 'none';
+
+            if (bookedTimeSlots[currentDateKey]) {
+              selectedTimeSlot = null;
+              generateTimeSlots();
+            } else {
+              availabilityTextElement.textContent = 'Available';
+            }
+          });
+          calendarElement.appendChild(dateElement);
+        }
+      }
+
+      prevMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        updateCalendar();
+      });
+
+      nextMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        updateCalendar();
+      });
+
+      proceedButton.addEventListener('click', () => {
+        generateTimeSlots();
+        timeSlotsElement.style.display = 'block';
+      });
+
+      function generateTimeSlots() {
+        timeSlotsElement.innerHTML = '';
+        for (let hour = 7; hour < 19; hour++) {
+          const timeSlotElement = document.createElement('div');
+          timeSlotElement.classList.add('time-slot');
+          timeSlotElement.textContent = `${formatTime(hour)} - ${formatTime(hour + 1)}`;
+          timeSlotElement.addEventListener('click', () => {
+            if (selectedTimeSlot) {
+              const previousSlot = timeSlotsElement.querySelector('.time-slot.selected');
+              if (previousSlot) {
+                previousSlot.classList.remove('selected');
+              }
+            }
+            timeSlotElement.classList.add('selected');
+            selectedTimeSlot = timeSlotElement.textContent;
+            saveButton.style.display = 'block';
+          });
+
+          const dateKey = selectedDate.toDateString();
+          if (bookedTimeSlots[dateKey] && bookedTimeSlots[dateKey].includes(timeSlotElement.textContent)) {
+            timeSlotElement.classList.add('booked');
+            timeSlotElement.style.backgroundColor = '#ccc';
+            timeSlotElement.style.color = '#777';
+            timeSlotElement.style.pointerEvents = 'none';
+          }
+
+          timeSlotsElement.appendChild(timeSlotElement);
+        }
+      }
+
+      saveButton.addEventListener('click', () => {
+        if (selectedDate && selectedTimeSlot) {
+          const dateKey = selectedDate.toDateString();
+          if (!bookedTimeSlots[dateKey]) {
+            bookedTimeSlots[dateKey] = [];
+          }
+          bookedTimeSlots[dateKey].push(selectedTimeSlot);
+
+          if (bookedTimeSlots[dateKey].length === 12) {
+            const highlightedDateElement = Array.from(calendarElement.children).find(
+              (el) => el.textContent === selectedDate.getDate().toString()
+            );
+            highlightedDateElement.classList.add('full');
+            availabilityTextElement.textContent = 'Fully Booked';
+          } else {
+            const highlightedDateElement = Array.from(calendarElement.children).find(
+              (el) => el.textContent === selectedDate.getDate().toString()
+            );
+            highlightedDateElement.classList.add('highlighted');
+            availabilityTextElement.textContent = 'Partially Available';
+          }
+
+          timeSlotsElement.style.display = 'none';
+          saveButton.style.display = 'none';
+          selectedTimeSlot = null;
+          selectedDate = null;
+          selectedDateElement.textContent = 'None';
+          proceedButton.style.display = 'none';
+        }
+      });
+
+      function formatTime(hour) {
+        const suffix = hour >= 12 ? 'p.m.' : 'a.m.';
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        return `${formattedHour} ${suffix}`;
+      }
+
+      updateCalendar();
+    </script>
+  </body>
+</html>
