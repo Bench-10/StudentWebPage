@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="loginPageDesign.css" /> 
+    <link rel="stylesheet" href="generalElements.css" /> 
+    <link rel="stylesheet" href="header.css" /> 
+    <link rel="stylesheet" href="sideBar.css" /> 
+    <link rel="stylesheet" href="content.css" /> 
+  
+    <title>
+      Student Dashboard
+    </title>
+  </head>
+
+  <body>
+    <header class="HEADER">
+         
+    </header>
+
+    <nav class="SIDEBAR">
+      <div class="sideBarContainer">
+        <div class="sideBarContents">
+          
+          <a class="sideBarItem" data-content="content1">
+            <img src="sideBarIcons\announcement.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content2">
+            <img src="sideBarIcons\massages.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content3">
+            <img src="sideBarIcons\calendar.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content4">
+            <img src="sideBarIcons\document.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content5">
+            <img src="sideBarIcons\bill.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content6">
+            <img src="sideBarIcons\tickets.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content7">
+            <img src="sideBarIcons\user.png">
+          </a>
+
+          <a class="sideBarItem" data-content="content8">
+            <img src="sideBarIcons\sign-in.png">
+          </a>
+          
+        </div>
+
+        <div class="logoutOption">
+          <a class="logoutLink">
+            <img src="sideBarIcons\log-out.png">
+          </a>
+        </div>
+      </div>
+
+
+    </nav>
+
+    <div class="content">
+
+      <div id="content1" class="content-item">
+        <h2>Content 1</h2>
+        <p>This is the content for Item 1.</p>
+      </div>
+
+      <div id="content2" class="content-item">
+        <h2>Content 2</h2>
+        <p>This is the content for Item 2.</p>
+      </div>
+
+      <div id="content3" class="content-item">
+        <h2>Content 3</h2>
+        <p>This is the content for Item 3.</p>
+      </div>
+
+      <div id="content4" class="content-item">
+        <h2>Content 4</h2>
+        <p>This is the content for Item 4.</p>
+      </div>
+
+      <div id="content5" class="content-item">
+        <h2>Content 3</h2>
+        <p>This is the content for Item 3.</p>
+      </div>
+
+      <div id="content6" class="content-item">
+        <h2>Content 4</h2>
+        <p>This is the content for Item 4.</p>
+      </div>
+
+      <div id="content7" class="content-item">
+        <h2>Content 3</h2>
+        <p>This is the content for Item 3.</p>
+      </div>
+
+      <div id="content8" class="content-item">
+        <h2>Content 4</h2>
+        <p>This is the content for Item 4.</p>
+      </div>
+
+
+    </div>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const sidebarItems = document.querySelectorAll('.sideBarItem');
+        const contentItems = document.querySelectorAll('.content-item');
+      
+        // Set up event listeners for sidebar items
+        sidebarItems.forEach(item => {
+          item.addEventListener('click', () => {
+            // Remove 'active' class from all sidebar items
+            sidebarItems.forEach(i => i.classList.remove('active'));
+      
+            // Add 'active' class to clicked sidebar item
+            item.classList.add('active');
+      
+            // Hide all content items
+            contentItems.forEach(content => content.classList.remove('active'));
+      
+            // Show the corresponding content item based on the clicked sidebar item
+            const contentId = item.getAttribute('data-content');
+            document.getElementById(contentId).classList.add('active');
+          });
+        });
+        
+        // Optionally: Trigger click on the first item to display the initial content
+        sidebarItems[0].click();
+      });
+    </script>
+
+    <!-- STARTER WINDOW
+      <div class="starterCardHolder">
+      </div>
+    -->
+  </body>
+
+
+</html>

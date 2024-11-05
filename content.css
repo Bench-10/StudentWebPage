@@ -1,0 +1,13 @@
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+    }
+
+.content-item {
+    display: none;
+    }
+
+.content-item.active {
+    display: block;
+    }
