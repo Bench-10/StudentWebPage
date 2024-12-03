@@ -1,0 +1,579 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.content-items{
+    position: absolute;
+    margin-left: 40px;
+    margin-right: 40px;
+    z-index: -2;
+    top: 40px;
+}
+
+.content-items h2{
+    text-align: center;
+    font-size: 45px;
+    font-weight: 600;
+    margin-top: 70px;
+    margin-bottom: 45px;
+    color: green;
+}
+
+/*ANNOUNCEMENTS*/
+#contents1{
+    width: 100%;
+    visibility: hidden;
+}
+
+
+
+
+/*APPOINTMENTS*/
+#contents2{
+
+    visibility: visible;
+}
+
+/*DOCUMENTS*/
+#contents3{
+    visibility: hidden;
+}
+
+
+
+
+
+/*Calendar Container*/
+.main-container {
+    margin-top: 40px;
+    width: 1400px;
+    max-height: 590px;
+    display: flex;
+    gap: 10px;
+}
+
+
+
+/*POPUP*/
+
+
+.popup-starter-container{
+    position: fixed;
+    visibility: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3)
+}
+
+.popup-starter{
+    margin-left: 30px;
+    margin-right: 30px;
+    min-width: 580px;
+    max-width: 700px;
+    min-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    overflow: hidden;
+    animation: popup-transition 0.7s ease forwards;
+}
+
+@keyframes  popup-transition {
+    from{
+       opacity: 0;
+       transform: translateY(-30px);
+    }
+    
+    to{
+       opacity: 1;
+       transform: translateY(0);
+    }
+}
+
+@keyframes  popup-transition-close {
+    from{
+        opacity: 1;
+        transform: translateY(0);
+     }
+     
+     to{
+        opacity: 0;
+        transform: translateY(-40px);
+     }
+}
+
+.popup-close{
+    position: absolute;
+    color: black;
+    border-style: none;
+    background-color: transparent;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+}
+
+.popup-student{
+    background-color: #46bd8b;
+    align-content: center;
+    text-align: center;
+}
+
+.popup-student button,
+.popup-employee button{
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    color: green;
+    margin-top: 30px;
+    padding: 10px 20px;
+    height: 40px;
+    border-width: 3px;
+    border-style: none;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.popup-student button:hover,
+.popup-employee button:hover {
+    background-color: rgb(16, 151, 16);
+    color: white;
+}
+
+.popup-student img {
+    width:100%;
+}
+
+.popup-employee{
+    background-color: #1cb978;
+    align-content: center;
+    text-align: center;
+}
+
+.popup-employee a{
+    font-style: none;
+}
+
+.popup-employee img{
+    width:100%;
+}
+
+
+
+
+
+/*FEEDBACK*/
+.feedback{
+    position:fixed;
+    background-color: #1cb978;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    visibility: hidden;
+    
+}
+
+@keyframes  feedback-popup {
+    from{
+       opacity: 0;
+    }
+    
+    to{
+       opacity: 1;
+    }
+}
+
+.feedback:hover{
+    background-color: #41e9a3;
+    box-shadow: 0 0px 15px rgba(97, 253, 82, 0.992);
+}
+
+.feedback p{
+    position:absolute;
+    background-color: rgba(39, 34, 34, 0.6);
+    top:-42px;
+    border-radius: 5px;
+    font-size: 8px;
+    padding: 5px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.feedback:hover p{
+    opacity: 1;
+}
+
+
+
+.feedback img{
+    width: 20px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.calendar-container {
+    min-width: 300px;
+    flex: 3;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.month-year {
+    font-size: 24px;
+    font-weight: 500;
+}
+.button {
+    background-color: #1cb978;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+.day-name {
+    font-weight: 500;
+    color: #888;
+}
+.date {
+    padding: 10px;
+    height: 45px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.date:hover {
+    background-color: #1cb978;
+    color: white;
+}
+
+.date:hover .appointment-count{
+    background-color: white;
+    color: #1cb978;
+}
+
+.date.selected {
+    background-color: #1cb978;
+    color: white;
+}
+.date.full {
+    background-color: #ff7f7f;
+    color: white;
+}
+.date.holiday {
+    background-color: red;
+    color: white;
+    cursor: not-allowed;
+}
+.date.today {
+    border: 2px solid #1cb978;
+    font-weight: bold;
+}
+.summary {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+.proceed-button {
+    display: none;
+    margin-top: 20px;
+    background-color: #1cb978;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+
+/*STATUS*/
+.status-box {
+ 
+    min-width: 300px;
+    flex: 2;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+}
+
+.status-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+.appointment-info {
+    font-size: 16px;
+    color: #555;
+    margin-top: 10px;
+}
+.working-hours {
+    font-size: 16px;
+    color: #444;
+    margin-top: 20px;
+    font-weight: 500;
+}
+.holiday-info {
+    color: red;
+    font-weight: bold;
+}
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    z-index: 1000;
+    width: 400px;
+    max-width: 90%;
+}
+.popup-container.active {
+    display: block;
+}
+.popup-container .popup-header {
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-right: 30px;
+}
+.popup-container .popup-header .close-popup {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+.popup-container .popup-body {
+    margin-top: 20px;
+    font-size: 16px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-group input[type="radio"],
+.form-group input[type="checkbox"] {
+    width: auto;
+}
+
+.form-group .checkbox-options {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-group .checkbox-options label {
+    margin-right: 10px;
+}
+
+.form-group .checkbox-options input {
+    margin-right: 5px;
+}
+
+.form-group .checkbox-options input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.form-group .checkbox-options label {
+    margin-bottom: 5px;
+}
+
+.submit-btn {
+    background-color: #1cb978;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+
+/*APPOINTMENT*/
+.appointments-list-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+    min-width: 150px;
+    flex:1;
+}
+
+
+.appointments-list-container h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#appointments-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#appointments-list li {
+    padding: 10px;
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#appointments-list li:hover {
+    background-color: #1cb978;
+    color: white;
+}
+
+
+
+
+/*RESPONSIVENESS*/
+
+@media (max-width: 600px){
+
+
+    .main-container{
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .date {
+        height: 30px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .popup-starter{
+        min-width: 350px;
+        max-width: 400px;
+        min-height: 370px;
+            
+    }
+}
+
+@media  (max-width: 700px){
+    #contents3{
+        margin-top: 5px;
+        margin-bottom: 25px;
+    }
+
+    .content-items h2{
+        font-size: 30px;
+    }
+}
+
+
+@media (max-width:1370px){
+    
+    .main-container {
+        width:100%;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px ;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
+}
+
+
+
+
