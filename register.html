@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles\login-signup-design.css">
+    <title>Register</title>
+    <link rel="icon" type="image/png" href="Assets\Header Icons\SPC Logo.png">
+</head>
+<body>
+      <div class="register-container">
+        <div class="register-box">
+
+            <header>Sign Up</header>
+            <form id="registrationForm" action="process_registration.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                <div class="input-field">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" autocomplete="off" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" autocomplete="off" required>
+                </div>
+
+
+                <div class="input-field">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="off" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="role">Register as</label>
+                    <select name="role" id="role" required>
+                        <option value="student">Student</option>
+                        <option value="employee">Employee</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    
+                    <input type="submit" class="btn" name="submit" value="Register" required>
+                </div>
+                <div class="links">
+                    Already a member? <a href="login.html">Sign In</a>
+                </div>
+            </form>
+        </div>
+      </div>
+
+      <div class="login-container">
+        <div class="login-box">
+            <header>Login</header>
+            <form action="" method="post">
+                <div class="field input">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" autocomplete="off" required>
+                </div>
+
+                <div class="field input">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="off" required>
+                </div>
+
+                <div class="field">
+                    
+                    <input type="submit" class="btn" name="submit" value="Login" required>
+                </div>
+                <div class="links">
+                    Don't have account? <a href="register.html">Register here</a>
+                </div>
+            </form>
+        </div>
+      </div>
+
+      <script>
+      document.querySelector('form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const formData = {
+              username: document.getElementById('username').value,
+              email: document.getElementById('email').value,
+              password: document.getElementById('password').value,
+              role: document.getElementById('role').value
+          };
+
+          fetch('api/register.php', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(formData)
+          })
+          .then(response => response.json())
+          .then(data => {
+              if(data.message === "User was created.") {
+                  window.location.href = 'login.html';
+              } else {
+                  alert(data.message);
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred during registration');
+          });
+      });
+      </script>
+      <script src="register.js"></script>
+</body>
+</html>
